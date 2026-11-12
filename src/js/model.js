@@ -1,4 +1,7 @@
 import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
+
+
 export const state = {
   recipe: {},
 };
@@ -34,8 +37,10 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
     };
 
-    console.log(state.recipe);
+  console.log(state.recipe);
   } catch (err) {
-    alert(err);
+    // Mensaje de error personalizado en consola (Inciso ix)
+    console.error(`${err} 💥💥💥💥`);
+    throw err;
   }
 };
