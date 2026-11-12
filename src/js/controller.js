@@ -1,5 +1,7 @@
 import * as model from './model.js';
 import recipeView from './views/RecipeView.js';
+import searchView from './views/searchViews.js';
+import resultsView from './views/ResultView.js';
 
 const controlRecipes = async function () {
   try {
@@ -20,30 +22,24 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    // 1) Cargar resultados de búsqueda
-    await model.loadSearchResults('pizza');
+    // 1) Obtener consulta de búsqueda
+    const query = searchView.getQuery();
+    if (!query) return;
 
-    // 2) Renderizar resultados
-    console.log(model.state.search.results);
+    resultsView.renderSpinner();
+
+    // 2) Cargar resultados de búsqueda
+    await model.loadSearchResults(query);
+
+    // 3) Renderizar resultados en pantalla
+    resultsView.render(model.state.search.results);
   } catch (err) {
     console.log(err);
   }
 };
-controlSearchResults();
 
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
-init();
-
-
-
-
-controlSearchResults();
-
-
-
-
-
-
 init();
